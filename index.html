@@ -13,8 +13,8 @@
     <style>
         /* CSS VARIABLES */
         :root {
-            --primary-color: #0b1a4a;
-            --secondary-color: #fca311;
+            --primary-color: #0b1a4a; /* Warna biru gelap menyesuaikan logo */
+            --secondary-color: #fca311; /* Warna kuning/orange aksen */
             --text-dark: #333;
             --text-light: #666;
             --bg-light: #f4f7f6;
@@ -56,19 +56,23 @@
             overflow-y: auto;
         }
 
+        /* STYLING LOGO GAMBAR */
         .sidebar .logo {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 20px;
+            padding-bottom: 25px;
         }
 
-        .sidebar .logo h1 {
-            font-size: 1.3rem;
-            color: var(--white);
-            line-height: 1.2;
+        .sidebar .logo img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            /* Karena logo asli Anda memiliki background putih, kita beri background putih di sidebar agar menyatu */
+            background-color: var(--white);
+            padding: 10px;
+            border-radius: 8px;
         }
-        .sidebar .logo span { color: var(--secondary-color); font-size: 0.9rem; display: block; margin-top: 5px;}
 
         .sidebar nav ul {
             list-style: none;
@@ -103,16 +107,16 @@
            MAIN CONTENT & MOBILE HEADER
            ========================================= */
         .main-content {
-            margin-left: var(--sidebar-width); /* Geser konten ke kanan di desktop */
+            margin-left: var(--sidebar-width);
             transition: margin-left 0.3s ease-in-out;
         }
 
         /* Header khusus untuk HP */
         .mobile-header {
-            display: none; /* Sembunyikan di desktop */
+            display: none;
             background-color: var(--primary-color);
             color: var(--white);
-            padding: 15px 20px;
+            padding: 10px 20px;
             position: sticky;
             top: 0;
             z-index: 999;
@@ -121,9 +125,11 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .mobile-header .logo-text {
-            font-size: 1.1rem;
-            font-weight: 600;
+        .mobile-header .logo-mobile img {
+            height: 40px;
+            background-color: var(--white);
+            padding: 5px;
+            border-radius: 5px;
         }
 
         .hamburger {
@@ -134,7 +140,7 @@
             color: var(--white);
         }
 
-        /* Overlay (Latar gelap saat menu HP terbuka) */
+        /* Overlay */
         .overlay {
             display: none;
             position: fixed;
@@ -212,6 +218,7 @@
             transition: 0.3s;
             border: none;
             cursor: pointer;
+            text-align: center;
         }
 
         .btn:hover { background-color: #e59400; }
@@ -349,7 +356,7 @@
         .modal-detail-item strong { color: var(--primary-color); display: inline-block; width: 90px; }
         .modal-detail-item span, .modal-detail-item p { color: var(--text-light); font-size: 0.95rem;}
 
-        /* 6. HUBUNGI KAMI */
+        /* 6. HUBUNGI KAMI (Diperbarui) */
         #kontak { background-color: var(--white); }
 
         .contact-container {
@@ -380,12 +387,26 @@
         .info-item p { font-size: 0.9rem; color: var(--text-light); }
 
         .form-group { margin-bottom: 15px; }
-        .form-group input, .form-group textarea {
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 0.95rem;
+            font-family: inherit;
+            background-color: #fafafa;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
         footer {
@@ -401,28 +422,22 @@
            RESPONSIVE DESIGN (TAMPILAN HP)
            ========================================= */
         @media (max-width: 768px) {
-            /* Sembunyikan sidebar ke kiri layar */
             .sidebar {
                 transform: translateX(-100%);
             }
-            /* Tampilkan sidebar saat ada class active */
             .sidebar.active {
                 transform: translateX(0);
             }
-            /* Konten penuh di HP */
             .main-content {
                 margin-left: 0;
             }
-            /* Tampilkan header khusus HP */
             .mobile-header {
                 display: flex;
             }
-            /* Penyesuaian ukuran teks */
             .hero-content h2 { font-size: 2rem; }
             section { padding: 40px 5%; }
-            .btn { width: 100%; text-align: center; }
+            .btn { width: 100%; }
             
-            /* Perbaikan Modal di HP */
             .modal-detail-item strong { display: block; width: 100%; margin-bottom: 3px; }
         }
     </style>
@@ -435,7 +450,8 @@
     <!-- SIDEBAR (KIRI) -->
     <aside class="sidebar" id="sidebar">
         <div class="logo">
-            <h1>Arta Wisata <span>Tour & Travel</span></h1>
+            <!-- Pastikan file gambar bernama logo.png ada di folder yang sama -->
+            <img src="logo.png" alt="Arta Wisata Logo">
         </div>
         <nav>
             <ul>
@@ -453,7 +469,9 @@
         
         <!-- HEADER MOBILE (Hanya muncul di HP) -->
         <header class="mobile-header">
-            <div class="logo-text">Arta Wisata</div>
+            <div class="logo-mobile">
+                <img src="logo.png" alt="Arta Wisata Logo">
+            </div>
             <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         </header>
 
@@ -541,6 +559,7 @@
         <section id="kontak">
             <div class="section-title">
                 <h2>Hubungi Kami</h2>
+                <p>Isi formulir di bawah ini, Anda akan langsung diarahkan ke WhatsApp kami.</p>
             </div>
             <div class="contact-container">
                 <div class="contact-info">
@@ -564,18 +583,38 @@
                 </div>
                 
                 <div class="contact-form">
-                    <h3>Kirim Pesan</h3>
-                    <form onsubmit="event.preventDefault(); alert('Pesan Anda telah terkirim! (Simulasi)');">
+                    <h3>Kirim Pesan via WhatsApp</h3>
+                    <!-- Form dengan ID untuk ditangkap oleh JavaScript -->
+                    <form id="wa-form">
                         <div class="form-group">
-                            <input type="text" placeholder="Nama Lengkap" required>
+                            <label>Nama Lengkap</label>
+                            <input type="text" id="nama" placeholder="Masukkan nama Anda" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Email Anda" required>
+                            <label>Nomor HP/WA</label>
+                            <input type="tel" id="nohp" placeholder="Contoh: 08123456789" required>
                         </div>
                         <div class="form-group">
-                            <textarea rows="4" placeholder="Pesan atau paket yang diminati..." required></textarea>
+                            <label>Paket yang Diminati</label>
+                            <select id="paket-pilihan" required>
+                                <option value="" disabled selected>-- Pilih Paket --</option>
+                                <option value="Paket Edukasi Bogor">Paket Edukasi Bogor</option>
+                                <option value="Paket Edukasi TMII">Paket Edukasi TMII</option>
+                                <option value="Paket Monas & Ragunan">Paket Monas & Ragunan</option>
+                                <option value="Paket Puncak Bogor">Paket Puncak Bogor</option>
+                                <option value="Paket Lembang Bandung">Paket Lembang Bandung</option>
+                                <option value="Paket Ciwidey Bandung">Paket Ciwidey Bandung</option>
+                                <option value="Paket Religi Jateng, Jogja & Dieng">Paket Religi Jateng, Jogja & Dieng</option>
+                                <option value="Paket Jogja 3H1M">Paket Jogja 3H1M</option>
+                                <option value="Paket Dieng 3H1M">Paket Dieng 3H1M</option>
+                                <option value="Lainnya / Konsultasi">Lainnya / Konsultasi</option>
+                            </select>
                         </div>
-                        <button type="submit" class="btn">Kirim Pesan</button>
+                        <div class="form-group">
+                            <label>Pesan Tambahan (Opsional)</label>
+                            <textarea id="pesan" rows="3" placeholder="Contoh: Rencana berangkat bulan depan, estimasi 40 orang."></textarea>
+                        </div>
+                        <button type="submit" class="btn"><i class="fab fa-whatsapp"></i> Kirim ke WhatsApp</button>
                     </form>
                 </div>
             </div>
@@ -669,12 +708,46 @@
             modal.style.display = 'none';
         }
 
-        // Tutup modal jika area di luar modal diklik
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
             }
         }
+
+        // --- LOGIKA FORM WHATSAPP ---
+        document.getElementById('wa-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah form me-refresh halaman
+
+            // Mengambil nilai dari input form
+            const nama = document.getElementById('nama').value;
+            const nohp = document.getElementById('nohp').value;
+            const paket = document.getElementById('paket-pilihan').value;
+            const pesan = document.getElementById('pesan').value;
+
+            // Nomor WhatsApp tujuan (Ganti dengan nomor Anda)
+            // Format internasional tanpa tanda plus (+), misal 0812... menjadi 62812...
+            const nomorWA = "6281387988001"; 
+
+            // Menyusun teks pesan
+            let textPesan = `Halo Arta Wisata, saya *${nama}* (${nohp}).\n\n`;
+            textPesan += `Saya tertarik dan ingin bertanya tentang *${paket}*.\n\n`;
+            
+            if(pesan.trim() !== "") {
+                textPesan += `Pesan Tambahan:\n"${pesan}"`;
+            }
+
+            // Mengubah teks menjadi format URL (spasi menjadi %20, enter menjadi %0A)
+            const encodedText = encodeURIComponent(textPesan);
+
+            // Membuat URL WhatsApp
+            const urlWA = `https://wa.me/${nomorWA}?text=${encodedText}`;
+
+            // Membuka WhatsApp di tab baru
+            window.open(urlWA, '_blank');
+            
+            // Opsional: Reset form setelah dikirim
+            this.reset();
+        });
     </script>
 </body>
 </html>

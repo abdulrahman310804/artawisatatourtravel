@@ -13,8 +13,8 @@
     <style>
         /* CSS VARIABLES */
         :root {
-            --primary-color: #0b1a4a; /* Biru gelap */
-            --secondary-color: #fca311; /* Orange aksen */
+            --primary-color: #0b1a4a; /* Biru Gelap */
+            --secondary-color: #fca311; /* Kuning/Emas */
             --text-dark: #333;
             --text-light: #666;
             --bg-light: #f4f7f6;
@@ -38,6 +38,37 @@
         }
 
         /* =========================================
+           DESAIN LOGO & BINGKAI BARU
+           ========================================= */
+        .logo-box {
+            background-color: var(--white);
+            border-radius: 12px;
+            border: 2px solid var(--secondary-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden; /* Memotong gambar yang keluar batas */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Trik Zoom: Gambar diperbesar dan diposisikan di tengah */
+        .logo-box img {
+            width: 130%; /* Zoom in */
+            height: 130%;
+            object-fit: cover;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-box:hover img {
+            transform: translate(-50%, -50%) scale(1.05); /* Efek zoom saat di-hover */
+        }
+
+        /* =========================================
            SIDEBAR (TAMPILAN DESKTOP)
            ========================================= */
         .sidebar {
@@ -51,26 +82,23 @@
             z-index: 1000;
             transition: transform 0.3s ease-in-out;
             overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            /* Padding dihapus di sini agar logo bisa full width */
             padding: 0; 
+            box-shadow: 2px 0 15px rgba(0,0,0,0.2);
         }
 
-        /* Desain Area Logo Baru */
-        .sidebar .logo {
-            background-color: var(--white); /* Latar putih solid */
-            padding: 25px 20px;
+        /* Area penempatan logo di sidebar */
+        .sidebar .logo-area {
+            padding: 30px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 3px solid var(--secondary-color);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .sidebar .logo img {
-            width: 100%;
-            max-width: 180px; /* Ukuran maksimal logo */
-            height: auto;
-            display: block;
+        /* Ukuran bingkai logo di desktop */
+        .sidebar .logo-box {
+            width: 200px;
+            height: 110px; 
         }
 
         /* Menu Navigasi */
@@ -112,42 +140,57 @@
             transition: margin-left 0.3s ease-in-out;
         }
 
-        /* Header khusus untuk HP - Didesain Putih Bersih */
+        /* Header khusus untuk HP - Clean & Modern */
         .mobile-header {
             display: none;
             background-color: var(--white);
-            padding: 12px 20px;
+            padding: 10px 20px;
             position: sticky;
             top: 0;
             z-index: 999;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        .mobile-header .logo-mobile img {
-            height: 45px; /* Tinggi logo di HP */
-            display: block;
+        /* Ukuran bingkai logo di HP (lebih kecil) */
+        .mobile-header .logo-box {
+            width: 130px;
+            height: 60px;
+            border-radius: 8px;
+            border-width: 1.5px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
 
+        /* Tombol Hamburger Modern */
         .hamburger {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            background: none;
+            background-color: var(--primary-color);
+            color: var(--white);
             border: none;
-            color: var(--primary-color); /* Ikon jadi biru gelap */
-            padding: 5px;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 8px rgba(11, 26, 74, 0.3);
+            transition: 0.3s;
         }
+        
+        .hamburger:active { transform: scale(0.95); }
 
         /* Overlay */
         .overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             z-index: 998;
             opacity: 0;
             transition: opacity 0.3s;
+            backdrop-filter: blur(3px);
         }
         .overlay.active { display: block; opacity: 1; }
 
@@ -361,9 +404,11 @@
 
     <!-- SIDEBAR (KIRI) -->
     <aside class="sidebar" id="sidebar">
-        <div class="logo">
-            <!-- Pastikan file logo.png ada di folder yang sama -->
-            <img src="logo.png" alt="Arta Wisata Logo">
+        <div class="logo-area">
+            <!-- Bingkai Logo Desktop -->
+            <div class="logo-box">
+                <img src="logo.png" alt="Arta Wisata Logo">
+            </div>
         </div>
         <nav>
             <ul>
@@ -381,9 +426,11 @@
         
         <!-- HEADER MOBILE -->
         <header class="mobile-header">
-            <div class="logo-mobile">
+            <!-- Bingkai Logo Mobile (Lebih kecil) -->
+            <div class="logo-box">
                 <img src="logo.png" alt="Arta Wisata Logo">
             </div>
+            <!-- Tombol Hamburger -->
             <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         </header>
 

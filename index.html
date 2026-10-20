@@ -2,12 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta viewport sangat penting untuk HP -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arta Wisata Tour & Travel</title>
     
-    <!-- Google Fonts (Gunakan display=swap agar teks langsung tampil meski font belum termuat) -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -20,6 +19,7 @@
             --text-light: #666;
             --bg-light: #f4f7f6;
             --white: #ffffff;
+            --sidebar-width: 260px;
         }
 
         * {
@@ -36,238 +36,290 @@
         body {
             background-color: var(--bg-light);
             color: var(--text-dark);
-            line-height: 1.5;
-            font-size: 14px; /* Ukuran font dasar lebih kecil untuk HP */
+            line-height: 1.6;
         }
 
-        /* NAVBAR (Dioptimalkan untuk HP) */
-        header {
+        /* =========================================
+           SIDEBAR (TAMPILAN DESKTOP)
+           ========================================= */
+        .sidebar {
+            width: var(--sidebar-width);
             background-color: var(--primary-color);
             color: var(--white);
-            padding: 10px 5%;
-            position: sticky;
+            position: fixed;
             top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 30px 20px;
             z-index: 1000;
-            display: flex;
-            flex-direction: column; /* Tumpuk logo dan menu */
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out;
+            overflow-y: auto;
         }
 
-        .logo h1 {
-            font-size: 1.2rem;
+        .sidebar .logo {
             text-align: center;
-        }
-        .logo span { color: var(--secondary-color); }
-
-        nav {
-            width: 100%;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
         }
 
-        nav ul {
+        .sidebar .logo h1 {
+            font-size: 1.3rem;
+            color: var(--white);
+            line-height: 1.2;
+        }
+        .sidebar .logo span { color: var(--secondary-color); font-size: 0.9rem; display: block; margin-top: 5px;}
+
+        .sidebar nav ul {
             list-style: none;
             display: flex;
-            flex-wrap: wrap; /* Biarkan menu turun ke bawah jika tidak muat */
-            justify-content: center;
+            flex-direction: column;
             gap: 10px;
         }
 
-        nav a {
-            color: var(--white);
+        .sidebar nav a {
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
-            font-size: 0.85rem;
-            padding: 5px 8px;
-            background: rgba(255,255,255,0.1); /* Sedikit background agar mudah ditekan */
-            border-radius: 5px;
-            display: block;
+            font-size: 1rem;
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.3s;
         }
 
-        /* SECTION BASE (Padding dikurangi untuk HP) */
+        .sidebar nav a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar nav a:hover, .sidebar nav a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--secondary-color);
+        }
+
+        /* =========================================
+           MAIN CONTENT & MOBILE HEADER
+           ========================================= */
+        .main-content {
+            margin-left: var(--sidebar-width); /* Geser konten ke kanan di desktop */
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* Header khusus untuk HP */
+        .mobile-header {
+            display: none; /* Sembunyikan di desktop */
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .mobile-header .logo-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .hamburger {
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--white);
+        }
+
+        /* Overlay (Latar gelap saat menu HP terbuka) */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* SECTION BASE */
         section {
-            padding: 40px 5%;
+            padding: 60px 5%;
         }
 
         .section-title {
-            text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .section-title h2 {
-            font-size: 1.6rem;
+            font-size: 2rem;
             color: var(--primary-color);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
         }
         
-        .section-title p {
-            color: var(--text-light);
-            font-size: 0.9rem;
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -5px;
+            width: 50%;
+            height: 3px;
+            background-color: var(--secondary-color);
         }
 
-        /* 1. BERANDA (HERO) */
+        .section-title p { color: var(--text-light); }
+
+        /* 1. BERANDA */
         #beranda {
-            /* Gunakan gambar yang lebih kecil untuk HP */
-            background: linear-gradient(rgba(11, 26, 74, 0.85), rgba(11, 26, 74, 0.85)), url('https://images.unsplash.com/photo-1549556229-8c08b5a2bb4e?auto=format&fit=crop&q=60&w=600') center/cover;
-            min-height: 100vh; /* Gunakan min-height agar tidak terpotong di browser HP */
+            background: linear-gradient(rgba(11, 26, 74, 0.8), rgba(11, 26, 74, 0.8)), url('https://images.unsplash.com/photo-1549556229-8c08b5a2bb4e?auto=format&fit=crop&q=60&w=1000') center/cover;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
             color: var(--white);
-            padding: 20px;
         }
 
         .hero-content h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            line-height: 1.3;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
         .hero-content p {
-            font-size: 0.9rem;
-            margin-bottom: 25px;
+            font-size: 1rem;
+            margin-bottom: 30px;
         }
 
-        /* Tombol Full Width di HP */
         .btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
+            display: inline-block;
+            padding: 12px 25px;
             background-color: var(--secondary-color);
             color: var(--white);
             text-decoration: none;
             border-radius: 5px;
             font-weight: 600;
-            font-size: 1rem;
-            text-align: center;
+            transition: 0.3s;
             border: none;
             cursor: pointer;
         }
+
+        .btn:hover { background-color: #e59400; }
 
         /* 2. ABOUT US */
         #about { background-color: var(--white); }
 
         .about-container {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .about-text p {
-            margin-bottom: 10px;
-            color: var(--text-light);
-            text-align: justify;
-            font-size: 0.9rem;
-        }
+        .about-text { flex: 1; min-width: 300px; }
+        .about-text p { margin-bottom: 15px; color: var(--text-light); text-align: justify; }
 
-        .about-img img {
-            width: 100%;
-            border-radius: 8px;
-            display: block;
-        }
+        .about-img { flex: 1; min-width: 300px; }
+        .about-img img { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* 3. LAYANAN KAMI */
-        #layanan {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        #layanan .section-title h2, #layanan .section-title p {
-            color: var(--white);
-        }
+        #layanan { background-color: var(--bg-light); }
 
         .services-grid {
-            display: flex;
-            flex-direction: column; /* Tumpuk ke bawah di HP */
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .service-card {
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            color: var(--text-dark);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
         }
+
+        .service-card:hover { transform: translateY(-5px); }
 
         .service-img {
             width: 100%;
-            height: 150px;
+            height: 180px;
             object-fit: cover;
         }
 
-        .service-content { padding: 15px; }
+        .service-content { padding: 20px; }
 
         .service-content h3 {
             color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
 
         .service-content ul { list-style: none; }
-
         .service-content ul li {
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-light);
             display: flex;
             align-items: flex-start;
         }
-
         .service-content ul li i {
             color: var(--secondary-color);
-            margin-right: 8px;
-            margin-top: 4px;
+            margin-right: 10px;
+            margin-top: 5px;
         }
 
         /* 4. PAKET WISATA */
         .packages-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .package-card {
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
         }
 
         .package-header {
             background-color: var(--primary-color);
             color: var(--white);
-            padding: 15px;
+            padding: 20px;
         }
 
-        .package-header h3 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            line-height: 1.3;
-        }
-
-        .package-price {
-            color: var(--secondary-color);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
+        .package-header h3 { font-size: 1.1rem; margin-bottom: 8px; line-height: 1.3; }
+        .package-price { color: var(--secondary-color); font-weight: 700; font-size: 1.1rem; }
 
         .package-body {
-            padding: 15px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .package-body p {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-        }
+        .package-body p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px; }
 
         /* MODAL DETAIL */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8);
+            background-color: rgba(0,0,0,0.7);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -275,219 +327,270 @@
 
         .modal-content {
             background: var(--white);
-            padding: 20px;
-            border-radius: 8px;
-            width: 95%; /* Lebar hampir penuh di HP */
-            max-height: 85vh; /* Agar tidak melebihi layar */
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
             overflow-y: auto;
             position: relative;
         }
 
         .close-btn {
             position: absolute;
-            top: 10px; right: 15px;
+            top: 15px; right: 20px;
             font-size: 1.5rem;
+            cursor: pointer;
             color: var(--text-dark);
-            font-weight: bold;
         }
 
-        .modal-content h2 {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            padding-right: 20px;
-        }
-
-        .modal-detail-item { margin-bottom: 12px; }
-        
-        .modal-detail-item strong {
-            color: var(--primary-color);
-            display: block; /* Teks judul di atas */
-            margin-bottom: 3px;
-        }
-
-        .modal-detail-item span, .modal-detail-item p {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
+        .modal-content h2 { color: var(--primary-color); margin-bottom: 15px; padding-right: 20px; font-size: 1.3rem;}
+        .modal-detail-item { margin-bottom: 15px; }
+        .modal-detail-item strong { color: var(--primary-color); display: inline-block; width: 90px; }
+        .modal-detail-item span, .modal-detail-item p { color: var(--text-light); font-size: 0.95rem;}
 
         /* 6. HUBUNGI KAMI */
+        #kontak { background-color: var(--white); }
+
         .contact-container {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
         }
 
         .contact-info h3, .contact-form h3 {
             color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+            margin-bottom: 20px;
         }
 
         .info-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .info-item i {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--secondary-color);
-            margin-right: 10px;
-            margin-top: 3px;
+            margin-right: 15px;
+            margin-top: 5px;
         }
         
-        .info-item h4 { font-size: 0.9rem; color: var(--primary-color); }
-        .info-item p { font-size: 0.85rem; color: var(--text-light); }
+        .info-item h4 { font-size: 1rem; color: var(--primary-color); }
+        .info-item p { font-size: 0.9rem; color: var(--text-light); }
 
-        .form-group { margin-bottom: 12px; }
-
+        .form-group { margin-bottom: 15px; }
         .form-group input, .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
-        /* FOOTER */
         footer {
             background-color: var(--primary-color);
             color: var(--white);
             text-align: center;
-            padding: 15px;
-            font-size: 0.8rem;
+            padding: 20px;
+            font-size: 0.9rem;
+            margin-top: 20px;
         }
 
-        /* TAMPILAN UNTUK TABLET / PC (Jika dibuka di layar lebar) */
-        @media (min-width: 768px) {
-            body { font-size: 16px; }
-            header { flex-direction: row; justify-content: space-between; padding: 15px 10%; }
-            .logo h1 { font-size: 1.5rem; }
-            nav ul { gap: 20px; }
-            nav a { background: none; font-size: 1rem; padding: 0; }
-            section { padding: 80px 10%; }
-            .hero-content h2 { font-size: 3rem; }
-            .btn { display: inline-block; width: auto; }
-            .about-container { flex-direction: row; }
-            .services-grid, .packages-grid { flex-direction: row; flex-wrap: wrap; }
-            .service-card, .package-card { flex: 1 1 calc(33.333% - 20px); min-width: 300px; }
-            .contact-container { flex-direction: row; }
-            .modal-detail-item strong { display: inline-block; width: 100px; }
+        /* =========================================
+           RESPONSIVE DESIGN (TAMPILAN HP)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Sembunyikan sidebar ke kiri layar */
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            /* Tampilkan sidebar saat ada class active */
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            /* Konten penuh di HP */
+            .main-content {
+                margin-left: 0;
+            }
+            /* Tampilkan header khusus HP */
+            .mobile-header {
+                display: flex;
+            }
+            /* Penyesuaian ukuran teks */
+            .hero-content h2 { font-size: 2rem; }
+            section { padding: 40px 5%; }
+            .btn { width: 100%; text-align: center; }
+            
+            /* Perbaikan Modal di HP */
+            .modal-detail-item strong { display: block; width: 100%; margin-bottom: 3px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER & NAVIGASI -->
-    <header>
+    <!-- OVERLAY UNTUK MOBILE -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR (KIRI) -->
+    <aside class="sidebar" id="sidebar">
         <div class="logo">
             <h1>Arta Wisata <span>Tour & Travel</span></h1>
         </div>
         <nav>
             <ul>
-                <li><a href="#beranda">Beranda</a></li>
-                <li><a href="#about">Tentang</a></li>
-                <li><a href="#layanan">Layanan</a></li>
-                <li><a href="#paket">Paket</a></li>
-                <li><a href="#kontak">Kontak</a></li>
+                <li><a href="#beranda" onclick="toggleSidebar()"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="#about" onclick="toggleSidebar()"><i class="fas fa-info-circle"></i> Tentang Kami</a></li>
+                <li><a href="#layanan" onclick="toggleSidebar()"><i class="fas fa-concierge-bell"></i> Layanan</a></li>
+                <li><a href="#paket" onclick="toggleSidebar()"><i class="fas fa-map-marked-alt"></i> Paket Wisata</a></li>
+                <li><a href="#kontak" onclick="toggleSidebar()"><i class="fas fa-envelope"></i> Hubungi Kami</a></li>
             </ul>
         </nav>
-    </header>
+    </aside>
 
-    <!-- 1. BERANDA -->
-    <section id="beranda">
-        <div class="hero-content">
-            <h2>Jelajahi Indonesia Bersama Kami</h2>
-            <p>PT. Arta Wisata Utama - Biro perjalanan wisata resmi yang siap menemani liburan dan study tour Anda.</p>
-            <a href="#paket" class="btn">Lihat Paket Wisata</a>
-        </div>
-    </section>
+    <!-- KONTEN UTAMA -->
+    <main class="main-content">
+        
+        <!-- HEADER MOBILE (Hanya muncul di HP) -->
+        <header class="mobile-header">
+            <div class="logo-text">Arta Wisata</div>
+            <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        </header>
 
-    <!-- 2. ABOUT US -->
-    <section id="about">
-        <div class="section-title">
-            <h2>Tentang Kami</h2>
-        </div>
-        <div class="about-container">
-            <div class="about-text">
-                <p><strong>PT. Arta Wisata Utama</strong> adalah Biro perjalanan wisata resmi yang didirikan pada tahun 2024. Kami terdiri dari profesional yang memiliki pengalaman di bidang pariwisata.</p>
-                <p>Kami melayani paket perjalanan wisata Pulau Jawa, Sumatera, Bali dan Lombok. Selain itu kami juga menyediakan jasa layanan reservasi bus pariwisata, hotel, villa, dan outbound.</p>
+        <!-- 1. BERANDA -->
+        <section id="beranda">
+            <div class="hero-content">
+                <h2>Jelajahi Indonesia Bersama Kami</h2>
+                <p>PT. Arta Wisata Utama - Biro perjalanan wisata resmi yang siap menemani liburan, study tour, dan gathering Anda dengan pelayanan profesional.</p>
+                <a href="#paket" class="btn">Lihat Paket Wisata</a>
             </div>
-            <div class="about-img">
-                <!-- Gunakan parameter w=600 untuk gambar ukuran kecil -->
-                <img src="https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&q=60&w=600" alt="Candi Borobudur" loading="lazy">
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 3. LAYANAN KAMI -->
-    <section id="layanan">
-        <div class="section-title">
-            <h2>Daftar Layanan</h2>
-            <p>Berbagai kebutuhan perjalanan Anda</p>
-        </div>
-        <div class="services-grid">
-            
-            <div class="service-card">
-                <!-- Gambar Bus (Kualitas Rendah untuk HP) -->
-                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=60&w=600" alt="Bus Pariwisata" class="service-img" loading="lazy">
-                <div class="service-content">
-                    <h3>Kendaraan</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Bus Pariwisata Big Bus</li>
-                        <li><i class="fas fa-check-circle"></i> Bus Pariwisata Medium Bus</li>
-                        <li><i class="fas fa-check-circle"></i> Micro Bus / Elf</li>
-                    </ul>
+        <!-- 2. ABOUT US -->
+        <section id="about">
+            <div class="section-title">
+                <h2>Tentang Kami</h2>
+            </div>
+            <div class="about-container">
+                <div class="about-text">
+                    <p><strong>PT. Arta Wisata Utama</strong> adalah Biro perjalanan wisata resmi yang didirikan pada tahun 2024. Kami terdiri dari profesional yang memiliki pengalaman di bidang pariwisata.</p>
+                    <p>Saat ini kami melayani paket perjalanan wisata Pulau Jawa, Sumatera, Bali dan Lombok. Selain itu kami juga menyediakan jasa layanan reservasi bus pariwisata, hotel, villa, outbound dan yang lainnya.</p>
+                    <p><em>Jangan ragu untuk memulai perjalanan anda bersama kami.</em></p>
+                </div>
+                <div class="about-img">
+                    <img src="https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&q=60&w=600" alt="Candi Borobudur" loading="lazy">
                 </div>
             </div>
+        </section>
 
-            <div class="service-card">
-                <!-- Gambar Hotel -->
-                <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=60&w=600" alt="Penginapan Hotel" class="service-img" loading="lazy">
-                <div class="service-content">
-                    <h3>Penginapan</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Hotel</li>
-                        <li><i class="fas fa-check-circle"></i> Homestay</li>
-                        <li><i class="fas fa-check-circle"></i> Villa</li>
-                    </ul>
+        <!-- 3. LAYANAN KAMI -->
+        <section id="layanan">
+            <div class="section-title">
+                <h2>Layanan Kami</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=60&w=600" alt="Bus Pariwisata" class="service-img" loading="lazy">
+                    <div class="service-content">
+                        <h3>Kendaraan</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Bus Pariwisata Big Bus</li>
+                            <li><i class="fas fa-check-circle"></i> Bus Pariwisata Medium Bus</li>
+                            <li><i class="fas fa-check-circle"></i> Micro Bus / Elf</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=60&w=600" alt="Penginapan Hotel" class="service-img" loading="lazy">
+                    <div class="service-content">
+                        <h3>Penginapan</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Hotel</li>
+                            <li><i class="fas fa-check-circle"></i> Homestay</li>
+                            <li><i class="fas fa-check-circle"></i> Villa</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&q=60&w=600" alt="Paket Wisata" class="service-img" loading="lazy">
+                    <div class="service-content">
+                        <h3>Paket Wisata</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Family Gathering</li>
+                            <li><i class="fas fa-check-circle"></i> Study Tour</li>
+                            <li><i class="fas fa-check-circle"></i> Field Trip</li>
+                            <li><i class="fas fa-check-circle"></i> Wisata Religi</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="service-card">
-                <!-- Gambar Wisata -->
-                <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&q=60&w=600" alt="Paket Wisata" class="service-img" loading="lazy">
-                <div class="service-content">
-                    <h3>Paket Wisata</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Family Gathering</li>
-                        <li><i class="fas fa-check-circle"></i> Study Tour</li>
-                        <li><i class="fas fa-check-circle"></i> Field Trip</li>
-                        <li><i class="fas fa-check-circle"></i> Wisata Religi</li>
-                    </ul>
+        <!-- 4. PAKET WISATA -->
+        <section id="paket">
+            <div class="section-title">
+                <h2>Paket Wisata</h2>
+                <p>Pilih paket yang sesuai. Klik detail untuk melihat fasilitas.</p>
+            </div>
+            <div class="packages-grid" id="package-container">
+                <!-- Di-generate oleh JavaScript -->
+            </div>
+        </section>
+
+        <!-- 6. HUBUNGI KAMI -->
+        <section id="kontak">
+            <div class="section-title">
+                <h2>Hubungi Kami</h2>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Informasi Kontak</h3>
+                    <div class="info-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div><h4>Telepon / WhatsApp</h4><p>0813 8798 8001</p></div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fab fa-instagram"></i>
+                        <div><h4>Instagram</h4><p>@artawisata_travel</p></div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div><h4>Email</h4><p>artawisata79@gmail.com</p></div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div><h4>Alamat</h4><p>Jl. H. Arjiun, Curug Sangereng<br>Kec. Kelapa Dua, Kab. Tangerang</p></div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Kirim Pesan</h3>
+                    <form onsubmit="event.preventDefault(); alert('Pesan Anda telah terkirim! (Simulasi)');">
+                        <div class="form-group">
+                            <input type="text" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email Anda" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="4" placeholder="Pesan atau paket yang diminati..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Kirim Pesan</button>
+                    </form>
                 </div>
             </div>
+        </section>
 
-        </div>
-    </section>
+        <footer>
+            <p>&copy; 2024 PT. Arta Wisata Utama. All Rights Reserved.</p>
+        </footer>
+    </main>
 
-    <!-- 4. PAKET WISATA -->
-    <section id="paket">
-        <div class="section-title">
-            <h2>Paket Wisata</h2>
-            <p>Klik detail untuk melihat fasilitas</p>
-        </div>
-        <div class="packages-grid" id="package-container">
-            <!-- Di-generate oleh JS -->
-        </div>
-    </section>
-
-    <!-- MODAL DETAIL -->
+    <!-- MODAL DETAIL PAKET -->
     <div id="modal-detail" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modal-title">Judul</h2>
+            <h2 id="modal-title">Judul Paket</h2>
             <div class="modal-detail-item">
                 <strong>Destinasi :</strong>
                 <span id="modal-destinasi"></span>
@@ -504,68 +607,18 @@
         </div>
     </div>
 
-    <!-- 6. HUBUNGI KAMI -->
-    <section id="kontak">
-        <div class="section-title">
-            <h2>Hubungi Kami</h2>
-        </div>
-        <div class="contact-container">
-            <div class="contact-info">
-                <div class="info-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <h4>WhatsApp</h4>
-                        <p>0813 8798 8001</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fab fa-instagram"></i>
-                    <div>
-                        <h4>Instagram</h4>
-                        <p>@artawisata_travel</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h4>Email</h4>
-                        <p>artawisata79@gmail.com</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h4>Alamat</h4>
-                        <p>Jl. H. Arjiun, Curug Sangereng<br>Kec. Kelapa Dua, Kab. Tangerang</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="contact-form">
-                <h3>Kirim Pesan</h3>
-                <form onsubmit="event.preventDefault(); alert('Pesan terkirim!');">
-                    <div class="form-group">
-                        <input type="text" placeholder="Nama Anda" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" placeholder="Nomor HP/WA" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="3" placeholder="Pesan..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Kirim</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2024 PT. Arta Wisata Utama.</p>
-    </footer>
-
     <!-- JAVASCRIPT -->
     <script>
-        // Data Paket Wisata (Sama seperti sebelumnya)
+        // --- LOGIKA SIDEBAR MOBILE ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // --- DATA PAKET WISATA ---
         const paketWisata = [
             { id: 1, judul: "Edukasi Bogor 1 Hari", destinasi: "AMTC dan Pelita Desa Ciseeng", harga: "Rp 400.000,-/pax", fasilitas: "Bus AC, Parkir, Tips Driver, Tour Leader, Photographer, Tiket Masuk, Asuransi, Snack Box, Makan 1x, P3K, Banner, Sertifikat, Pembimbing." },
             { id: 2, judul: "Edukasi TMII 1 Hari", destinasi: "Skyworld TMII", harga: "Rp 300.000,-/pax", fasilitas: "Bus AC, Parkir, Tips Driver, Tour Leader, Photographer, Tiket Masuk, Asuransi, Snack Box, Makan 1x, P3K, Banner." },
@@ -596,11 +649,9 @@
                 </div>
             `;
         });
-        
-        // Hanya update DOM sekali agar tidak berat di HP
         container.innerHTML = htmlContent;
 
-        // Modal Logic
+        // Logika Modal
         const modal = document.getElementById('modal-detail');
 
         function openModal(id) {
@@ -618,7 +669,7 @@
             modal.style.display = 'none';
         }
 
-        // Tutup modal jika klik di luar
+        // Tutup modal jika area di luar modal diklik
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
